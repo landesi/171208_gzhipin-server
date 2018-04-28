@@ -43,17 +43,40 @@ const UserModel = mongoose.model('user', userSchema) // 集合的名称为: user
 // 3.1. 通过Model实例的save()添加数据
 function testSave() {
   // 创建UserModel的实例
-  const userModel = new UserModel({username: 'Tom', password: md5('123'), type: 'dashen'})
+  const userModel = new UserModel({username: 'Bob', password: md5('234'), type: 'laoban'})
   // 调用save()保存
   userModel.save(function (error, user) {
     console.log('save()', error, user)
   })
-
 }
-testSave()
+// testSave()
 
 // 3.2. 通过Model的find()/findOne()查询多个或一个数据
+function testFind() {
+  // 查询多个: 得到是包含所有匹配文档对象的数组, 如果没有匹配的就是[]
+  UserModel.find({_id:'5ae3d7b7614c613db8abb914'}, function (error, users) {
+    console.log('find()', error, users)
+  })
+  // 查询一个: 得到是匹配的文档对象, 如果没有匹配的就是null
+  UserModel.findOne({_id:'5ae3d7b7614c613db8abb914'}, function (error, user) {
+    console.log('findOne()', error, user)
+  })
+}
+// testFind()
 
 // 3.3. 通过Model的findByIdAndUpdate()更新某个数据
+function testUpdate() {
+  UserModel.findByIdAndUpdate({_id:'5ae3d7b7614c613db8abb914'},
+    {username:'Jack'}, function (error, oldUser) {
+    console.log('findByIdAndUpdate()', error, oldUser)
+  })
+}
+// testUpdate()
 
 // 3.4. 通过Model的remove()删除匹配的数据
+function testDelete() {
+  UserModel.remove({_id:'5ae3d7b7614c613db8abb914'}, function (error, doc) {
+    console.log('remove()', error, doc) // {n: 1/0, ok: 1}
+  })
+}
+testDelete()

@@ -119,7 +119,14 @@ router.get('/user', function (req, res) {
   }
   // 根据userid查询对应的user
   UserModel.findOne({_id: userid}, filter, function (error, user) {
-    res.send({code: 0, data: user})
+    if(user) {
+      res.send({code: 0, data: user})
+    } else {
+      // 通知浏览器删除userid cookie
+      res.clearCookie('userid')
+      res.send({code: 1, msg: '请先登陆'})
+    }
+
   })
 })
 
